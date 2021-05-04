@@ -20,3 +20,16 @@ fun main(args: Array<String>)
         else -> println("Ничоси :О")
     }
 }
+
+import java.util.Scanner
+
+//Сумма цифр числа
+fun sumDigits(digit:Int):Int =  if (digit != 0) digit%10 + sumDigits(digit/10) else 0
+
+fun main()
+{
+    val scanner = Scanner(System.`in`)
+    print("Введите число: ")
+    val digit = scanner.nextInt()
+    println(sumDigits(digit))
+}
