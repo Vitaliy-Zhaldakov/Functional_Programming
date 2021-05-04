@@ -34,6 +34,10 @@ fun maxDigit(digit:Int, curMax:Int):Int = if (digit != 0) if (digit%10 > curMax)
 //Произведение цифр числа
 fun multDigits(digit:Int):Int =  if (digit != 0) digit%10 * multDigits(digit/10) else 1
 
+//Количество делителей числа, не делящихся на 3
+fun numOfDel(digit: Int, del:Int):Int = if(digit != del) if (digit % del == 0 && del % 3 != 0) 1 + numOfDel(digit, del + 1)
+                                                         else numOfDel(digit, del + 1) else 1
+
 fun main()
 {
     val scanner = Scanner(System.`in`)
@@ -51,4 +55,7 @@ fun main()
 
     print("Произведение цифр числа: ")
     println(multDigits(digit))
+
+    print("Количество делителей числа, не делящихся на 3: ")
+    println(numOfDel(digit, 1))
 }
