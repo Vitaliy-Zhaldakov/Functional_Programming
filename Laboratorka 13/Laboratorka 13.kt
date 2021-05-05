@@ -36,7 +36,7 @@ fun multDigits(digit:Int):Int =  if (digit != 0) digit%10 * multDigits(digit/10)
 
 //Количество делителей числа, не делящихся на 3
 fun numOfDel(digit: Int, del:Int):Int = if(digit != del) if (digit % del == 0 && del % 3 != 0) 1 + numOfDel(digit, del + 1)
-                                                         else numOfDel(digit, del + 1) else 1
+                                                         else numOfDel(digit, del + 1) else 0
 
 //Минимальная нечетная цифра числа
 fun minOddDigit(digit:Int, curMin:Int):Int = if (digit != 0) if (curMin == 0)
@@ -44,6 +44,18 @@ fun minOddDigit(digit:Int, curMin:Int):Int = if (digit != 0) if (curMin == 0)
         else if(digit%10 < curMin && digit%10 % 2 !=0) minOddDigit(digit/10, digit%10)
              else minOddDigit(digit/10,curMin)
                   else curMin
+
+//Вычисление НОД двух чисел
+fun nod(numb1:Int, numb2:Int):Int = if(numb1 % numb2 == 0) numb2
+                                    else if (numb2 % numb1 == 0) numb1
+                                         else if (numb1 > numb2) nod(numb1%numb2, numb2)
+                                              else nod(numb1, numb2%numb1)
+
+//Сумма всех делителей числа, взаимно простых с суммой цифр числа и не взаимно простых с произведением цифр числа
+fun sumOfDel(digit: Int, del: Int):Int = if(digit != del)
+            if(digit % del == 0 && nod(del,sumDigits(digit)) == 1 && nod(del,multDigits(digit)) != 1) del + sumOfDel(digit,del + 1)
+                else sumOfDel(digit, del + 1)
+                 else 0
 
 fun main()
 {
@@ -68,4 +80,7 @@ fun main()
 
     print("Минимальная нечетная цифра числа: ")
     println(minOddDigit(digit,0))
+
+    print("Сумма всех делителей числа, взаимно простых с суммой цифр числа и не взаимно простых с произведением цифр числа: ")
+    println(sumOfDel(digit, 1))
 }
