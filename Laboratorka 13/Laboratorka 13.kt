@@ -54,33 +54,42 @@ fun nod(numb1:Int, numb2:Int):Int = if(numb1 % numb2 == 0) numb2
 //Сумма всех делителей числа, взаимно простых с суммой цифр числа и не взаимно простых с произведением цифр числа
 fun sumOfDel(digit: Int, del: Int):Int = if(digit != del)
             if(digit % del == 0 && nod(del,sumDigits(digit)) == 1 && nod(del,multDigits(digit)) != 1) del + sumOfDel(digit,del + 1)
-                else sumOfDel(digit, del + 1)
-                 else 0
+             else sumOfDel(digit, del + 1)
+               else 0
 
 fun main()
 {
     val scanner = Scanner(System.`in`)
-    print("Введите число: ")
-    val digit = scanner.nextInt()
+    do {
+        print("Введите число: ")
+        val digit = scanner.nextInt()
 
-    print("Сумма цифр числа: ")
-    println(sumDigits(digit))
+        println("Выберите, какой метод хотите использовать: ")
+        println("1.Сумма цифр числа")
+        println("2.Минимальная цифра числа")
+        println("3.Максимальная цифра числа")
+        println("4.Произведение цифр числа")
+        println("5.Количество делителей числа, не делящихся на 3")
+        println("6.Минимальная нечетная цифра числа")
+        println("7.Сумма всех делителей числа, взаимно простых с суммой цифр числа и не взаимно простых с произведением цифр числа")
+        println("0.Выход")
 
-    print("Минимальная цифра числа: ")
-    println(minDigit(digit,digit%10))
+        var method:Int = scanner.nextInt()
+        do {
+        when(method) {
+            1 -> println(sumDigits(digit))
+            2 -> println(minDigit(digit, digit % 10))
+            3 -> println (maxDigit(digit, digit % 10))
+            4 -> println (multDigits(digit))
+            5 -> println (numOfDel(digit, 1))
+            6 -> println (minOddDigit(digit, 0))
+            7 -> println (sumOfDel(digit, 1))
+        }
+            method = scanner.nextInt()
+        } while(method != 0)
 
-    print("Максимальная цифра числа: ")
-    println(maxDigit(digit,digit%10))
-
-    print("Произведение цифр числа: ")
-    println(multDigits(digit))
-
-    print("Количество делителей числа, не делящихся на 3: ")
-    println(numOfDel(digit, 1))
-
-    print("Минимальная нечетная цифра числа: ")
-    println(minOddDigit(digit,0))
-
-    print("Сумма всех делителей числа, взаимно простых с суммой цифр числа и не взаимно простых с произведением цифр числа: ")
-    println(sumOfDel(digit, 1))
+        println("1.Новое число")
+        println("0.Выход")
+        val choice = scanner.nextInt()
+    } while(choice != 0)
 }
