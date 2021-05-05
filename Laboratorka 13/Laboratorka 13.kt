@@ -38,6 +38,13 @@ fun multDigits(digit:Int):Int =  if (digit != 0) digit%10 * multDigits(digit/10)
 fun numOfDel(digit: Int, del:Int):Int = if(digit != del) if (digit % del == 0 && del % 3 != 0) 1 + numOfDel(digit, del + 1)
                                                          else numOfDel(digit, del + 1) else 1
 
+//Минимальная нечетная цифра числа
+fun minOddDigit(digit:Int, curMin:Int):Int = if (digit != 0) if (curMin == 0)
+        if(digit%10 % 2 != 0) minOddDigit(digit/10, digit%10) else minOddDigit(digit/10,curMin)
+        else if(digit%10 < curMin && digit%10 % 2 !=0) minOddDigit(digit/10, digit%10)
+             else minOddDigit(digit/10,curMin)
+                  else curMin
+
 fun main()
 {
     val scanner = Scanner(System.`in`)
@@ -58,4 +65,7 @@ fun main()
 
     print("Количество делителей числа, не делящихся на 3: ")
     println(numOfDel(digit, 1))
+
+    print("Минимальная нечетная цифра числа: ")
+    println(minOddDigit(digit,0))
 }
