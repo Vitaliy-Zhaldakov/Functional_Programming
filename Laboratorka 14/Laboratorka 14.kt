@@ -34,6 +34,28 @@ fun evenSumDigits(digit: Int):Boolean = sumDigitsDown(digit,0) % 2 == 0
 //Проверка минимальной цифры на нечётность
 fun oddMinDigit(digit: Int):Boolean = minDigitDown(digit,digit%10) % 2 != 0
 
+//Количество делителей числа, не делящихся на 3
+tailrec fun numOfDel(digit: Int, del:Int, number:Int):Int = if(digit != del) if (digit % del == 0 && del % 3 != 0)
+    numOfDel(digit, del + 1, number + 1) else numOfDel(digit, del + 1, number) else number
+
+//Минимальная нечетная цифра числа
+tailrec fun minOddDigit(digit:Int, curMin:Int):Int = if (digit != 0) if (curMin == 0)
+        if(digit%10 % 2 != 0) minOddDigit(digit/10, digit%10) else minOddDigit(digit/10,curMin)
+        else if(digit%10 < curMin && digit%10 % 2 !=0) minOddDigit(digit/10, digit%10)
+             else minOddDigit(digit/10,curMin)
+                  else curMin
+
+//Вычисление НОД двух чисел
+fun nod(numb1:Int, numb2:Int):Int = if(numb1 % numb2 == 0) numb2
+                                    else if (numb2 % numb1 == 0) numb1
+                                         else if (numb1 > numb2) nod(numb1%numb2, numb2)
+                                              else nod(numb1, numb2%numb1)
+
+//Сумма всех делителей числа, взаимно простых с суммой цифр числа и не взаимно простых с произведением цифр числа
+tailrec fun sumOfDel(digit: Int, del: Int, sumDel: Int):Int = if(digit != del)
+            if(digit % del == 0 && nod(del,sumDigitsDown(digit,0)) == 1 && nod(del,mulDigitsDown(digit, 1)) != 1)
+                sumOfDel(digit,del + 1, sumDel + del) else sumOfDel(digit, del + 1, sumDel)
+               else sumDel
 fun main()
 {
     val scanner = Scanner(System.`in`)
