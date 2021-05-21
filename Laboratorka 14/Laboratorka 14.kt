@@ -27,6 +27,13 @@ fun numberTraversal(digit: Int, init: Int = 0, operation:(Int,Int) -> Int) = ope
 fun numberTraversalWithCondition(digit: Int, init: Int, operation: (Int, Int) -> Int, check: (Int) -> Boolean) =
     if (check(digit)) operation(digit,init) else 0
 
+//Проверка числа на чётность
+fun even(digit: Int):Boolean = digit % 2 == 0
+//Проверка на чётность суммы цифр
+fun evenSumDigits(digit: Int):Boolean = sumDigitsDown(digit,0) % 2 == 0
+//Проверка минимальной цифры на нечётность
+fun oddMinDigit(digit: Int):Boolean = minDigitDown(digit,digit%10) % 2 != 0
+
 fun main()
 {
     val scanner = Scanner(System.`in`)
@@ -36,4 +43,11 @@ fun main()
         println(numberTraversal(digit,1) { digit, init -> mulDigitsDown(digit, init) })
         println(numberTraversal(digit,digit%10) { digit, init -> minDigitDown(digit, init) })
         println(numberTraversal(digit,digit%10) { digit, init -> maxDigitDown(digit, init) })
+        
+        //Если число чётное, найти сумму его цифр
+        println(numberTraversalWithCondition(digit,0, { digit, init -> sumDigitsDown(digit, init) },{digit -> even(digit)}))
+        //Если сумма цифр числа чётная, найти произведение цифр числа
+        println(numberTraversalWithCondition(digit,1, { digit, init -> mulDigitsDown(digit, init) },{digit -> evenSumDigits(digit)}))
+        //Если минимальная цифра нечётная, найти максимальную цифру
+        println(numberTraversalWithCondition(digit, digit%10, {digit, init -> maxDigitDown(digit, init) },{digit -> oddMinDigit(digit)}))
 }
