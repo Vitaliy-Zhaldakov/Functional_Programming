@@ -23,6 +23,9 @@ tailrec fun mulDigitsDown(digit:Int, mul:Int):Int = if (digit != 0) mulDigitsDow
 
 //Функция обхода числа, выполняющая заданные операции над числом
 fun numberTraversal(digit: Int, init: Int = 0, operation:(Int,Int) -> Int) = operation(digit,init)
+//Функция обхода числа с условием, выполняющая заданные операции над числом
+fun numberTraversalWithCondition(digit: Int, init: Int, operation: (Int, Int) -> Int, check: (Int) -> Boolean) =
+    if (check(digit)) operation(digit,init) else 0
 
 fun main()
 {
