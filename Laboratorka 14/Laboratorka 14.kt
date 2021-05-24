@@ -23,16 +23,11 @@ tailrec fun mulDigitsDown(digit:Int, mul:Int):Int = if (digit != 0) mulDigitsDow
 
 //Функция обхода числа, выполняющая заданные операции над числом
 fun numberTraversal(digit: Int, init: Int = 0, operation:(Int,Int) -> Int) = operation(digit,init)
-//Функция обхода числа с условием, выполняющая заданные операции над числом
-fun numberTraversalWithCondition(digit: Int, init: Int, operation: (Int, Int) -> Int, check: (Int) -> Boolean) =
-    if (check(digit)) operation(digit,init) else 0
+fun testSumDigits(digit: Int):Int = numberTraversal(digit, 0) { digit, init -> sumDigitsDown(digit, init) }
 
-//Проверка числа на чётность
-fun even(digit: Int):Boolean = digit % 2 == 0
-//Проверка на чётность суммы цифр
-fun evenSumDigits(digit: Int):Boolean = sumDigitsDown(digit,0) % 2 == 0
-//Проверка минимальной цифры на нечётность
-fun oddMinDigit(digit: Int):Boolean = minDigitDown(digit,digit%10) % 2 != 0
+//Функция обхода числа с условием, выполняющая заданные операции над числом
+tailrec fun numberTraversalWithCondition(digit: Int, init: Int, operation: (Int, Int) -> Int, check: (Int) -> Boolean) :Int =
+    if (digit == 0) init else numberTraversalWithCondition(digit/10, if(check(digit%10)) operation(digit%10,init) else init, operation,check)
 
 //Количество делителей числа, не делящихся на 3
 tailrec fun numOfDel(digit: Int, del:Int, number:Int):Int = if(digit != del) if (digit % del == 0 && del % 3 != 0)
@@ -52,24 +47,61 @@ fun nod(numb1:Int, numb2:Int):Int = if(numb1 % numb2 == 0) numb2
                                               else nod(numb1, numb2%numb1)
 
 //Сумма всех делителей числа, взаимно простых с суммой цифр числа и не взаимно простых с произведением цифр числа
-tailrec fun sumOfDel(digit: Int, del: Int, sumDel: Int):Int = if(digit != del)
+tailrec fun sumOfDel(digit: Int, del: Int, sumDel:Int):Int = if(digit != del)
             if(digit % del == 0 && nod(del,sumDigitsDown(digit,0)) == 1 && nod(del,mulDigitsDown(digit, 1)) != 1)
                 sumOfDel(digit,del + 1, sumDel + del) else sumOfDel(digit, del + 1, sumDel)
                else sumDel
+
+//Выбор операции с числом
+fun op(operator: Char): (Int, Int) -> Int =
+    when (operator) {
+        '+' -> {a: Int, b: Int -> a + b}
+        '-' -> {a: Int, b: Int -> a - b}
+        '*' -> {a: Int, b: Int -> a * b}
+        else -> throw IllegalArgumentException("Try again")
+    }
+
 fun main()
 {
     val scanner = Scanner(System.`in`)
+    do {
         print("Введите число: ")
         val digit = scanner.nextInt()
-        println(numberTraversal(digit,0) { digit, init -> sumDigitsDown(digit, init) })
-        println(numberTraversal(digit,1) { digit, init -> mulDigitsDown(digit, init) })
-        println(numberTraversal(digit,digit%10) { digit, init -> minDigitDown(digit, init) })
-        println(numberTraversal(digit,digit%10) { digit, init -> maxDigitDown(digit, init) })
-        
-        //Если число чётное, найти сумму его цифр
-        println(numberTraversalWithCondition(digit,0, { digit, init -> sumDigitsDown(digit, init) },{digit -> even(digit)}))
-        //Если сумма цифр числа чётная, найти произведение цифр числа
-        println(numberTraversalWithCondition(digit,1, { digit, init -> mulDigitsDown(digit, init) },{digit -> evenSumDigits(digit)}))
-        //Если минимальная цифра нечётная, найти максимальную цифру
-        println(numberTraversalWithCondition(digit, digit%10, {digit, init -> maxDigitDown(digit, init) },{digit -> oddMinDigit(digit)}))
+
+        println("Выберите, какой метод хотите использовать: ")
+        println("1.Сумма цифр числа")
+        println("2.Минимальная цифра числа")
+        println("3.Максимальная цифра числа")
+        println("4.Произведение цифр числа")
+        println("5.Количество делителей числа, не делящихся на 3")
+        println("6.Минимальная нечетная цифра числа")
+        println("7.Сумма всех делителей числа, взаимно простых с суммой цифр числа и не взаимно простых с произведением цифр числа")
+        // Для 6-го задания
+        println("8.Произведение чётных цифр числа")
+        println("9.Сумма цифр числа, меньше 5")
+        println("10.Сумма нечётных цифр, больше 5")
+        println("0.Выход")
+
+        var method:Int = scanner.nextInt()
+        do {
+        when(method) {
+            1 -> println(sumDigitsDown(digit, 0))
+            2 -> println(minDigitDown(digit, digit % 10))
+            3 -> println(maxDigitDown(digit, digit % 10))
+            4 -> println(mulDigitsDown(digit, 1))
+            5 -> println(numOfDel(digit, 1,0))
+            6 -> println(minOddDigit(digit, 0))
+            7 -> println(sumOfDel(digit, 1, 0))
+            8 -> println(numberTraversalWithCondition(digit, 1, {a,b -> a * b}, {x -> x % 2 == 0}))
+            9 -> println(numberTraversalWithCondition(digit, 0, {a,b -> a + b}, {x -> x < 5}))
+            10 -> println(numberTraversalWithCondition(digit, 0,{a,b -> a + b}, {x -> x % 2 != 0 && x > 5}))
+        }
+            method = scanner.nextInt()
+        } while(method != 0)
+
+        println("1.Новое число")
+        println("0.Выход")
+        val choice = scanner.nextInt()
+    } while(choice != 0)
+    println(op('+')(23,67))
 }
