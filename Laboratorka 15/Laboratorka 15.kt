@@ -82,3 +82,10 @@ fun selectInput() : Array<Int> {
 //Task 4.5 Дан целочисленный массив и натуральный индекс.
 //Необходимо определить является ли элемент по указанному индексу глобальным минимумом
 fun checkMin(array: Array<Int>, index:Int):Boolean = minElem(array) == array[index]
+
+//Task 4.6 Дан целочисленный массив. Необходимо осуществить циклический
+//сдвиг элементов массива влево на три позиции
+fun cyclicShiftLeft(array: Array<Int>): List<Int> {
+    val ar1 = array.drop(3)
+    return  ar1 + array.take(3)
+}
