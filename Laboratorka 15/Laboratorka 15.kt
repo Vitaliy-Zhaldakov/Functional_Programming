@@ -78,3 +78,7 @@ fun selectInput() : Array<Int> {
     else
         return arrayOp()
 }
+
+//Task 4.5 Дан целочисленный массив и натуральный индекс.
+//Необходимо определить является ли элемент по указанному индексу глобальным минимумом
+fun checkMin(array: Array<Int>, index:Int):Boolean = minElem(array) == array[index]
