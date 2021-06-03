@@ -89,3 +89,18 @@ fun cyclicShiftLeft(array: Array<Int>): List<Int> {
     val ar1 = array.drop(3)
     return  ar1 + array.take(3)
 }
+
+//Task 4.17
+fun exchangeMinMax(array: Array<Int>):Array<Int?>
+    {
+        val newArray:Array<Int?> = Array(array.size){ null }
+        newArray[array.indexOf(minElem(array))] = maxElem(array)
+        newArray[array.indexOf(maxElem(array))] = minElem(array)
+        fillNull(array, newArray, 0)
+        return newArray
+    }
+//Заполняет нулевые элементы значениями из другого массива
+tailrec fun fillNull(array:Array<Int>, newArray:Array<Int?>, counter:Int):Array<Int?> = if(counter == array.size) newArray
+    else if(newArray[counter] == null) { newArray[counter] = array[counter]
+                                        fillNull(array,newArray, counter + 1) }
+    else fillNull(array,newArray,counter + 1)
