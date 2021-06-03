@@ -104,3 +104,11 @@ tailrec fun fillNull(array:Array<Int>, newArray:Array<Int?>, counter:Int):Array<
     else if(newArray[counter] == null) { newArray[counter] = array[counter]
                                         fillNull(array,newArray, counter + 1) }
     else fillNull(array,newArray,counter + 1)
+
+//Task 4.19 Дан целочисленный массив. Необходимо осуществить циклический
+//сдвиг элементов массива вправо на одну позицию
+fun cyclicShiftRight(array: Array<Int>):List<Int>
+{
+    val ar1 = array.dropLast(1)
+    return array.takeLast(1) + ar1
+}
