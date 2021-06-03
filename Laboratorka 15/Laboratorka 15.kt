@@ -1,3 +1,4 @@
+import java.io.File
 import java.util.Scanner
 
 //Функция создания массива
@@ -38,3 +39,42 @@ tailrec fun findElem(array:Array<Int>, function: (Int, Int) -> Boolean, acum:Int
 fun minElem(array: Array<Int>) = findElem(array, {elem:Int, acum:Int -> elem < acum}, array[0],0)
 //Максимальный элемент массива
 fun maxElem(array:Array<Int>) = findElem(array, {elem:Int, acum:Int -> elem > acum}, array[0],0)
+
+//Task 3. Ввод из файла
+fun arrayInputFile(input : Map<Int, Int>) : Array<Int> {
+    val array:Array<Int> = Array(input.size){0}
+    return arrayInputFile(array, 0, input.size, input)
+}
+//Заполнение массива элементами из файла
+fun arrayInputFile(array : Array<Int>, counter : Int, size : Int, input : Map<Int, Int>) : Array<Int> =
+    if (counter == size) array else {
+        array[counter] = input[counter]!!
+        arrayInputFile(array, counter + 1, size, input)
+    }
+
+//Организация чтения из файла
+//Одна строка - одно число, возвращает мэп индексированный
+fun inputFile(fileName:String) : Array<Int> {
+    val input = File(fileName).readLines()
+        .withIndex() //Возвращает ленивую итерацию, которая обертывает каждый элемент исходного массива в IndexedValue, содержащий индекс этого элемента и сам элемент.
+        .map { indexedValue -> indexedValue.index to indexedValue.value.toInt() }  // Создаёт карту
+        .toMap() //Возвращает карту
+    return arrayInputFile(input)
+}
+
+//Функция выбора источника считывания (Клавиатура или файл)
+fun selectInput() : Array<Int> {
+    println(
+        "Откуда считывать массив?\n" +
+                "1. Клавиатура\n" +
+                "2. Файл"
+    )
+    val type = readLine()!!.toInt()
+    if (type == 2) {
+        println("Введите имя файла: ")
+        val name = readLine().toString()
+        return inputFile("${name}.txt")
+    }
+    else
+        return arrayOp()
+}
