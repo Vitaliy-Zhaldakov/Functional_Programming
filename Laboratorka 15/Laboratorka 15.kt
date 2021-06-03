@@ -112,3 +112,10 @@ fun cyclicShiftRight(array: Array<Int>):List<Int>
     val ar1 = array.dropLast(1)
     return array.takeLast(1) + ar1
 }
+
+//Task 4.26 Дан целочисленный массив. Необходимо найти количество
+//элементов между первым и последним минимальным
+fun numBetweenMin (array: Array<Int>) = numBetweenMin (array,array.indexOf(minElem(array)), array.indexOf(maxElem(array)),0, 0)
+tailrec fun numBetweenMin (array: Array<Int>, first: Int, second: Int, acum:Int, counter: Int):Int =
+    if(counter == array.size - 1) acum else if (counter > first && counter < second) numBetweenMin(array, first, second, acum + 1, counter + 1)
+        else numBetweenMin(array, first, second, acum, counter + 1)
