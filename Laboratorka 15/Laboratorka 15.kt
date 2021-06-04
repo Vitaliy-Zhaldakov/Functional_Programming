@@ -258,3 +258,20 @@ tailrec fun generateSet(start: Double, set: MutableSet<Double>, counter: Int): S
     set.add(start + 1)
     generateSet(start + 1, set, counter + 1)
 }
+
+fun main()
+    {
+        val list = generateList()
+
+        val time1 = System.currentTimeMillis()
+        list.binarySearch { 7673 }
+        val time2 = System.currentTimeMillis()
+        println("Время поиска в списке: ${time2 - time1}")
+
+        val set = generateSet()
+        
+        val time3 = System.currentTimeMillis()
+        set.first { num:Double -> num == 7673.1 }
+        val time4 = System.currentTimeMillis()
+        println("Время поиска в множестве: ${time4 - time3}")
+    }
