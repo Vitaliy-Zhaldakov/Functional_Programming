@@ -201,3 +201,41 @@ fun listSelectInput() : List<Int?> {
     else
         return listOp()
 }
+
+//Task 8.5
+fun listCheckMin(list: List<Int>, index:Int):Boolean = list.minOrNull() == list[index]
+
+//Task 8.6
+fun listCyclicShiftLeft(list: List<Int>): List<Int> {
+    val ar1 = list.drop(3)
+    return  ar1 + list.take(3)
+}
+
+//Task 8.17
+tailrec fun listExchangeMinMax(list: List<Int>, result: List<Int>, counter: Int):List<Int> = when {
+    counter == list.size -> result
+    list[counter] == list.minOrNull() -> listExchangeMinMax(list, result + list.maxOrNull()!!, counter + 1)
+    list[counter] == list.maxOrNull() -> listExchangeMinMax(list, result + list.minOrNull()!!, counter + 1)
+    else -> listExchangeMinMax(list, result + list[counter], counter + 1)
+}
+
+//Task 8.19
+fun listCyclicShiftRight(list: List<Int>):List<Int>
+{
+    val ar1 = list.dropLast(1)
+    return list.takeLast(1) + ar1
+}
+
+//Task 8.26
+fun listNumBetweenMin (list: List<Int>) = listNumBetweenMin (list,list.indexOf(list.minOrNull()), list.indexOf(list.maxOrNull()),0, 0)
+tailrec fun listNumBetweenMin (list: List<Int>, first: Int, second: Int, acum:Int, counter: Int):Int =
+    if(counter == list.size - 1) acum else if (counter > first && counter < second) listNumBetweenMin(list, first, second, acum + 1, counter + 1)
+    else listNumBetweenMin(list, first, second, acum, counter + 1)
+
+//Task 8.29
+fun listCheckMaxInRange(list: List<Int>, a:Int, b:Int):Boolean = if(a == b) false else if(a == list.maxOrNull()) true else listCheckMaxInRange(list,a + 1, b)
+
+//Task 8.41
+fun listAverageAbs(list: List<Int>):Int = listSumOfAbs(list) / list.size
+//Сумма модулей элементов массива
+fun listSumOfAbs(list: List<Int>):Int = listOp(list.iterator(),{ elem:Int, sum:Int -> abs(elem) + abs(sum) }, 0)
