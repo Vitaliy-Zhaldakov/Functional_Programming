@@ -139,3 +139,13 @@ tailrec fun positiveDels(list: List<Int>, listDel: MutableList<Int>, counter: In
 fun listOfDel(num:Int,del:Int, list: MutableList<Int>):MutableList<Int> = if(del == num) list.plus(del).toMutableList()
     else if(num % del == 0) listOfDel(num, del + 1, list.plus(del).toMutableList())
             else listOfDel(num, del + 1, list)
+            
+//Task 4.53 Для введенного списка построить новый с элементами, большими, чем среднее арифметическое списка,
+//но меньшими, чем его максимальное значение
+tailrec fun task53(inputList:List<Int>, outputList:List<Int>, counter:Int):List<Int> = if(counter == inputList.size) outputList
+    else if(inputList[counter] > averageList(inputList) && inputList[counter] < inputList.maxOrNull()!!)
+        task53(inputList, outputList + inputList[counter], counter + 1)
+            else task53(inputList, outputList, counter + 1)
+
+//Среднее арифметическое списка
+fun averageList(list: List<Int>):Int = list.sum() / list.size            
