@@ -165,3 +165,39 @@ tailrec fun listInput(list : List<Int>, counter : Int, size : Int) : List<Int> =
 tailrec fun listOp(a: Iterator<Int>, f: (Int, Int) -> Int, result: Int): Int =
     if (!a.hasNext()) result else
         listOp(a, f, f(a.next(),result))
+
+//Task 7
+fun listInputFile(input : Map<Int, Int>) : List<Int?> {
+    val list:List<Int> = listOf()
+    return listInputFile(list, 0, input)
+}
+//Заполнение массива элементами из файла
+fun listInputFile(list: List<Int?>, counter : Int, input : Map<Int, Int>) : List<Int?> = if (counter == list.size) list
+    else listInputFile(list + input[counter], counter + 1,  input)
+
+//Организация чтения из файла
+//Одна строка - одно число, возвращает мэп индексированный
+fun listInputFile(fileName:String) : List<Int?> {
+    val input = File(fileName).readLines()
+        .withIndex() //Возвращает ленивую итерацию, которая обертывает каждый элемент исходного массива в IndexedValue, содержащий индекс этого элемента и сам элемент.
+        .map { indexedValue -> indexedValue.index to indexedValue.value.toInt() }  // Создаёт карту
+        .toMap() //Возвращает карту
+    return listInputFile(input)
+}
+
+//Функция выбора источника считывания (Клавиатура или файл)
+fun listSelectInput() : List<Int?> {
+    println(
+        "Откуда считывать массив?\n" +
+                "1. Клавиатура\n" +
+                "2. Файл"
+    )
+    val type = readLine()!!.toInt()
+    if (type == 2) {
+        println("Введите имя файла: ")
+        val name = readLine().toString()
+        return listInputFile("${name}.txt")
+    }
+    else
+        return listOp()
+}
