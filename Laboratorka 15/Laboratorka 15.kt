@@ -119,3 +119,7 @@ fun numBetweenMin (array: Array<Int>) = numBetweenMin (array,array.indexOf(minEl
 tailrec fun numBetweenMin (array: Array<Int>, first: Int, second: Int, acum:Int, counter: Int):Int =
     if(counter == array.size - 1) acum else if (counter > first && counter < second) numBetweenMin(array, first, second, acum + 1, counter + 1)
         else numBetweenMin(array, first, second, acum, counter + 1)
+
+//Task 4.29 Дан целочисленный массив и интервал a..b. Необходимо проверить 
+//наличие максимального элемента массива в этом интервале
+fun checkMaxInRange(max:Int, a:Int, b:Int):Boolean = if(a == b) false else if(a == max) true else checkMaxInRange(max,a + 1, b)
