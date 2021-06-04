@@ -149,3 +149,19 @@ tailrec fun task53(inputList:List<Int>, outputList:List<Int>, counter:Int):List<
 
 //Среднее арифметическое списка
 fun averageList(list: List<Int>):Int = list.sum() / list.size            
+
+//Task 5
+fun listOp(): List<Int> {
+    print("Введите размер списка:  ")
+    val size = readLine()!!.toInt()
+    val list = listOf<Int>()
+    return listInput(list, 0, size)
+}
+//Ввод элементов списка с клавиатуры
+tailrec fun listInput(list : List<Int>, counter : Int, size : Int) : List<Int> =
+    if (counter == size) list else listInput(list.plus(readLine()!!.toInt()), counter + 1, size)
+
+//Функция перебора элементов списка
+tailrec fun listOp(a: Iterator<Int>, f: (Int, Int) -> Int, result: Int): Int =
+    if (!a.hasNext()) result else
+        listOp(a, f, f(a.next(),result))
