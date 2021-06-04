@@ -129,3 +129,13 @@ fun checkMaxInRange(max:Int, a:Int, b:Int):Boolean = if(a == b) false else if(a 
 fun averageAbs(array: Array<Int>):Int = sumOfAbs(array) / array.size
 //Сумма модулей элементов массива
 fun sumOfAbs(array:Array<Int>):Int = arrayOp(array,{ elem:Int, sum:Int -> abs(elem) + abs(sum) }, 0, 0)
+
+//Task 4.47 Для введенного списка положительных чисел построить список всех
+//положительных делителей элементов списка без повторений
+tailrec fun positiveDels(list: List<Int>, listDel: MutableList<Int>, counter: Int):List<Int> = if(counter != list.size)
+    positiveDels(list, listOfDel(list[counter],1, listDel), counter + 1) else listDel.distinct()
+
+//Формирование списка делителей числа
+fun listOfDel(num:Int,del:Int, list: MutableList<Int>):MutableList<Int> = if(del == num) list.plus(del).toMutableList()
+    else if(num % del == 0) listOfDel(num, del + 1, list.plus(del).toMutableList())
+            else listOfDel(num, del + 1, list)
