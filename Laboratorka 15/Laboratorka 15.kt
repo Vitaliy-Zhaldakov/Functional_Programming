@@ -1,5 +1,6 @@
 import java.io.File
 import java.util.Scanner
+import kotlin.math.abs
 
 //Функция создания массива
 fun arrayOp():Array<Int>
@@ -123,3 +124,8 @@ tailrec fun numBetweenMin (array: Array<Int>, first: Int, second: Int, acum:Int,
 //Task 4.29 Дан целочисленный массив и интервал a..b. Необходимо проверить 
 //наличие максимального элемента массива в этом интервале
 fun checkMaxInRange(max:Int, a:Int, b:Int):Boolean = if(a == b) false else if(a == max) true else checkMaxInRange(max,a + 1, b)
+
+//Task 4.41 Дан целочисленный массив. Найти среднее арифметическое модулей его элементов
+fun averageAbs(array: Array<Int>):Int = sumOfAbs(array) / array.size
+//Сумма модулей элементов массива
+fun sumOfAbs(array:Array<Int>):Int = arrayOp(array,{ elem:Int, sum:Int -> abs(elem) + abs(sum) }, 0, 0)
