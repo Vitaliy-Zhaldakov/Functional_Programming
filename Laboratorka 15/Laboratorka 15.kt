@@ -239,3 +239,22 @@ fun listCheckMaxInRange(list: List<Int>, a:Int, b:Int):Boolean = if(a == b) fals
 fun listAverageAbs(list: List<Int>):Int = listSumOfAbs(list) / list.size
 //Сумма модулей элементов массива
 fun listSumOfAbs(list: List<Int>):Int = listOp(list.iterator(),{ elem:Int, sum:Int -> abs(elem) + abs(sum) }, 0)
+
+//Task 9
+fun generateList(): List<Double> {
+    val list: List<Double> = listOf()
+    return generateList(0.1,list,0)
+}
+//Формирование списка
+tailrec fun generateList(start: Double, list: List<Double>, counter: Int): List<Double> = if (counter == 10000000) list else
+    generateList(start + 1, list.plus(start + 1).toMutableList(), counter + 1)
+
+fun generateSet(): Set<Double> {
+    val set = mutableSetOf<Double>()
+    return generateSet(0.1, set, 0)
+}
+//Формирование множества
+tailrec fun generateSet(start: Double, set: MutableSet<Double>, counter: Int): Set<Double> = if (counter == 10000000) set else {
+    set.add(start + 1)
+    generateSet(start + 1, set, counter + 1)
+}
