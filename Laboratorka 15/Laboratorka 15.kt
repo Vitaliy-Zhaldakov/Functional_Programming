@@ -1,6 +1,7 @@
 import java.io.File
 import java.util.Scanner
 import kotlin.math.abs
+import kotlin.random.Random
 
 //Функция создания массива
 fun arrayOp():Array<Int>
@@ -86,9 +87,9 @@ fun checkMin(array: Array<Int>, index:Int):Boolean = minElem(array) == array[ind
 
 //Task 4.6 Дан целочисленный массив. Необходимо осуществить циклический
 //сдвиг элементов массива влево на три позиции
-fun cyclicShiftLeft(array: Array<Int>): List<Int> {
+fun cyclicShiftLeft(array: Array<Int>): Array<Int> {
     val ar1 = array.drop(3)
-    return  ar1 + array.take(3)
+    return (ar1 + array.take(3)).toTypedArray()
 }
 
 //Task 4.17
@@ -108,10 +109,10 @@ tailrec fun fillNull(array:Array<Int>, newArray:Array<Int?>, counter:Int):Array<
 
 //Task 4.19 Дан целочисленный массив. Необходимо осуществить циклический
 //сдвиг элементов массива вправо на одну позицию
-fun cyclicShiftRight(array: Array<Int>):List<Int>
+fun cyclicShiftRight(array: Array<Int>):Array<Int>
 {
     val ar1 = array.dropLast(1)
-    return array.takeLast(1) + ar1
+    return (array.takeLast(1) + ar1).toTypedArray()
 }
 
 //Task 4.26 Дан целочисленный массив. Необходимо найти количество
@@ -121,7 +122,7 @@ tailrec fun numBetweenMin (array: Array<Int>, first: Int, second: Int, acum:Int,
     if(counter == array.size - 1) acum else if (counter > first && counter < second) numBetweenMin(array, first, second, acum + 1, counter + 1)
         else numBetweenMin(array, first, second, acum, counter + 1)
 
-//Task 4.29 Дан целочисленный массив и интервал a..b. Необходимо проверить 
+//Task 4.29 Дан целочисленный массив и интервал a..b. Необходимо проверить
 //наличие максимального элемента массива в этом интервале
 fun checkMaxInRange(max:Int, a:Int, b:Int):Boolean = if(a == b) false else if(a == max) true else checkMaxInRange(max,a + 1, b)
 
@@ -136,10 +137,10 @@ tailrec fun positiveDels(list: List<Int>, listDel: MutableList<Int>, counter: In
     positiveDels(list, listOfDel(list[counter],1, listDel), counter + 1) else listDel.distinct()
 
 //Формирование списка делителей числа
-fun listOfDel(num:Int,del:Int, list: MutableList<Int>):MutableList<Int> = if(del == num) list.plus(del).toMutableList()
+tailrec fun listOfDel(num:Int,del:Int, list: MutableList<Int>):MutableList<Int> = if(del == num) list.plus(del).toMutableList()
     else if(num % del == 0) listOfDel(num, del + 1, list.plus(del).toMutableList())
             else listOfDel(num, del + 1, list)
-            
+
 //Task 4.53 Для введенного списка построить новый с элементами, большими, чем среднее арифметическое списка,
 //но меньшими, чем его максимальное значение
 tailrec fun task53(inputList:List<Int>, outputList:List<Int>, counter:Int):List<Int> = if(counter == inputList.size) outputList
@@ -148,11 +149,11 @@ tailrec fun task53(inputList:List<Int>, outputList:List<Int>, counter:Int):List<
             else task53(inputList, outputList, counter + 1)
 
 //Среднее арифметическое списка
-fun averageList(list: List<Int>):Int = list.sum() / list.size            
+fun averageList(list: List<Int>):Int = list.sum() / list.size
 
 //Task 5
 fun listOp(): List<Int> {
-    print("Введите размер списка:  ")
+    print("Введите размер списка: ")
     val size = readLine()!!.toInt()
     val list = listOf<Int>()
     return listInput(list, 0, size)
@@ -166,7 +167,7 @@ tailrec fun listOp(a: Iterator<Int>, f: (Int, Int) -> Int, result: Int): Int =
     if (!a.hasNext()) result else
         listOp(a, f, f(a.next(),result))
 
-//Task 7
+/*//Task 7
 fun listInputFile(input : Map<Int, Int>) : List<Int?> {
     val list:List<Int> = listOf()
     return listInputFile(list, 0, input)
@@ -200,7 +201,7 @@ fun listSelectInput() : List<Int?> {
     }
     else
         return listOp()
-}
+}*/
 
 //Task 8.5
 fun listCheckMin(list: List<Int>, index:Int):Boolean = list.minOrNull() == list[index]
@@ -241,37 +242,96 @@ fun listAverageAbs(list: List<Int>):Int = listSumOfAbs(list) / list.size
 fun listSumOfAbs(list: List<Int>):Int = listOp(list.iterator(),{ elem:Int, sum:Int -> abs(elem) + abs(sum) }, 0)
 
 //Task 9
+//Формирование списка рандомных элементов
 fun generateList(): List<Double> {
     val list: List<Double> = listOf()
-    return generateList(0.1,list,0)
+    return generateList(list,0)
 }
-//Формирование списка
-tailrec fun generateList(start: Double, list: List<Double>, counter: Int): List<Double> = if (counter == 10000000) list else
-    generateList(start + 1, list.plus(start + 1).toMutableList(), counter + 1)
 
+tailrec fun generateList(list: List<Double>, counter: Int): List<Double> = if (counter == 10000) list else
+    generateList( list.plus(Random.nextDouble(0.0,10000.0)).toMutableList(), counter + 1)
+
+//Формирование множества рандомных элементов
 fun generateSet(): Set<Double> {
     val set = mutableSetOf<Double>()
-    return generateSet(0.1, set, 0)
-}
-//Формирование множества
-tailrec fun generateSet(start: Double, set: MutableSet<Double>, counter: Int): Set<Double> = if (counter == 10000000) set else {
-    set.add(start + 1)
-    generateSet(start + 1, set, counter + 1)
+    return generateSet(set, 0)
 }
 
-fun main()
+tailrec fun generateSet(set: MutableSet<Double>, counter: Int): Set<Double> = if (counter == 10000) set else {
+    set.add(Random.nextDouble(0.0, 10000.0))
+    generateSet(set, counter + 1)
+}
+
+//Формирование массива рандомных элементов
+fun generateArray(): Array<Double>
+{
+    val array: Array<Double> = arrayOf()
+    return generateArray(array, 0)
+}
+
+tailrec fun generateArray(array : Array<Double>, counter:Int): Array<Double> = if(counter == 10000) array else
+    generateArray(array.plus(Random.nextDouble(0.0,10000.0)), counter + 1)
+
+//Task 10
+//Измерение времени для списка
+tailrec fun listTime(list: List<Double>, counter: Int, sum :Double):Double = if(counter == 10) sum
+    else {
+    val time1 = System.currentTimeMillis().toDouble()
+    list.find { num:Double -> num == 7673.0 }
+    val time2 = System.currentTimeMillis().toDouble()
+    listTime(list, counter + 1, sum + (time2 - time1))
+    }
+
+//Измерение времени для множества
+tailrec fun setTime(set: Set<Double>, counter: Int, sum :Double):Double = if(counter == 10) sum
+else {
+    val time1 = System.currentTimeMillis().toDouble()
+    set.find { num:Double -> num == 7673.0 }
+    val time2 = System.currentTimeMillis().toDouble()
+    setTime(set, counter + 1, sum + (time2 - time1))
+}
+
+//Измерение времени для массива
+tailrec fun arrayTime(array: Array<Double>, counter: Int, sum :Double):Double = if(counter == 10) sum
+else {
+    val time1 = System.currentTimeMillis().toDouble()
+    array.find { num : Double -> num == 7673.0 }
+    val time2 = System.currentTimeMillis().toDouble()
+    arrayTime(array, counter + 1, sum + (time2 - time1))
+}
+
+    fun main()
     {
-        val list = generateList()
+        //val array = arrayOp()
 
-        val time1 = System.currentTimeMillis()
-        list.binarySearch { 7673 }
-        val time2 = System.currentTimeMillis()
-        println("Время поиска в списке: ${time2 - time1}")
+        //Для неотсортированных --------------------------------
+        val list = generateList()
+        var sumTime = listTime(list, 0,0.0)
+        println("Время поиска в рандомном списке: ${sumTime / 10}")
 
         val set = generateSet()
-        
-        val time3 = System.currentTimeMillis()
-        set.first { num:Double -> num == 7673.1 }
-        val time4 = System.currentTimeMillis()
-        println("Время поиска в множестве: ${time4 - time3}")
+        sumTime = setTime(set, 0,0.0)
+        println("Время поиска в рандомном множестве: ${sumTime / 10}")
+
+        val array = generateArray()
+        sumTime = arrayTime(array, 0,0.0)
+        println("Время поиска в рандомном массиве: ${sumTime / 10}\n")
+        //-------------------------------------------------------
+
+        //Для отсортированных------------------------------------
+        val sortList = generateList()
+        sortList.sorted()
+        sumTime = listTime(list, 0,0.0)
+        println("Время поиска в сортированном списке: ${sumTime / 10}")
+
+        val sortSet = generateSet()
+        sortSet.sorted()
+        sumTime = setTime(set, 0,0.0)
+        println("Время поиска в сортированном множестве: ${sumTime / 10}")
+
+        val sortArray = generateArray()
+        sortArray.sorted()
+        sumTime = arrayTime(array, 0,0.0)
+        println("Время поиска в сортированном массиве: ${sumTime / 10}")
     }
+
